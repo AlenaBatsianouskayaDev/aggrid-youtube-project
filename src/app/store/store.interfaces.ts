@@ -9,3 +9,7 @@ export interface IVideoData {
   videoTitle: string, 
   description: string
 }
+
+export interface IErrorData {
+  error: string,
+}

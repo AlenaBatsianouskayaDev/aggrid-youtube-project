@@ -21,6 +21,6 @@ const reducer = createReducer<IVideosState>(
 
   on(videosActions.addVideosData, (state, payload) => ({
     ...state,
-    payload
+    videosData: [...state.videosData, {...payload}]
   }))
 )

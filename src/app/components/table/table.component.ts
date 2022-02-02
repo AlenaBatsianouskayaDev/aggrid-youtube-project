@@ -3,8 +3,11 @@ import { ColDef } from 'ag-grid-community';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ApiService } from 'src/services/api.service';
+import { Store } from '@ngrx/store';
+
+import { ApiService } from 'src/app/services/api.service';
 import { ITableData } from 'src/app/interfaces/interfaces';
+import { addVideosData } from 'src/app/store/videos.actions';
 
 @Component({
   selector: 'app-table',
@@ -48,27 +51,22 @@ export class TableComponent implements OnInit {
 
   constructor(
     private _apiService: ApiService,
+    private store: Store
     ) {}
 
   ngOnInit(): void {
-    this._apiService.getQuery('cat')
+    this._apiService.getPopularVideos('cat')
       .pipe(
-        // takeUntil(this.destroy$)) 
         first())
       .subscribe(val => 
-        this.rowData = val.items.map ((data: any) => ({
+        this.rowData = val.items.map ((data: any) => 
+          this.store.dispatch(addVideosData({
           preview: data.snippet.thumbnails.default.url, 
           publishedOn: data.snippet.publishedAt , 
           videoTitle: data.snippet.title , 
-          description: data.snippet.description})
+          description: data.snippet.description}))
         )
       )
-    // this.rowData = [
-    //   { preview: 'a', publishedOn: 'rfhf', videoTitle: 'dgdfrf', description: 'rfhfh' },
-    //   { preview: 'rdgdf', publishedOn: 'rfhfd', videoTitle: 'rfgdf', description: 'rfhfhd' },
-    //   { preview: 'rfh', publishedOn: 'rfhf', videoTitle: 'rfhf', description: 'rfhf'},
-    //   { preview: 'rfhdf', publishedOn: 'rfhfh', videoTitle: 'rfhfd', description: 'rfh'}
-    // ] 
   }
 
   // getSelectedRows(): void {
