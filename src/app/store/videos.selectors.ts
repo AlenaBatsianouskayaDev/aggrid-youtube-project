@@ -3,6 +3,7 @@ import { IVideosState } from "./videos.reducers";
 
 const getFeature = createFeatureSelector<IVideosState>('videos');
 
-export const getVideosData = createSelector(
+export const getTableData = createSelector(
   getFeature, (state: IVideosState) => state.videosData
+
 )

@@ -1,15 +1,25 @@
 import { Action, createReducer, on } from "@ngrx/store";
 
 import * as videosActions from './videos.actions';
-import { IVideoData } from "./store.interfaces";
+import { IVideosData } from "./store.interfaces";
 
 
 export interface IVideosState {
-  videosData: IVideoData[]
+  videosData: IVideosData,
 }
 
 export const initialState: IVideosState = {
-  videosData: []
+  videosData: {
+    etag: '',
+    items: [],
+    kind: '',
+    nextPageToken: '',
+    pageInfo: {
+      totalResults: 0, 
+      resultsPerPage: 0
+    },
+    regionCode: '',
+  },
 }
 
 export function videosReducer(state: IVideosState | undefined, action: Action): IVideosState {
@@ -21,6 +31,11 @@ const reducer = createReducer<IVideosState>(
 
   on(videosActions.addVideosData, (state, payload) => ({
     ...state,
-    videosData: [...state.videosData, {...payload}]
-  }))
+    videosData: { ...state.videosData, ...payload}
+    })
+  ),
+  on(videosActions.videosRequestError, (state, payload) => ({
+      ...state, 
+    }),
+  )
 )

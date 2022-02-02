@@ -1,22 +1,17 @@
 import { createAction, props } from '@ngrx/store';
-import { IVideoData, IErrorData } from './store.interfaces';
+import { IVideosData } from './store.interfaces';
 
 
 export const videosRequest = createAction(
-  '[VIDEOS] addVideosData'
-);
-
-export const videosRequestSuccess = createAction(
-  '[VIDEOS] addVideosData',
-  props<IVideoData>()
-);
-
-export const videosRequestError = createAction(
-  '[VIDEOS] addVideosData',
-  props<IErrorData>()
+  '[VIDEOS] videosRequest'
 );
 
 export const addVideosData = createAction(
   '[VIDEOS] addVideosData',
-  props< IVideoData>()
+  props< IVideosData >()
+);
+
+export const videosRequestError = createAction(
+  '[VIDEOS] videosRequestError',
+  props< any >()
 );
