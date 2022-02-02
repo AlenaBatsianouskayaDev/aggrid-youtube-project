@@ -9,6 +9,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { ITableData, IResponseVideoData } from 'src/app/interfaces/interfaces';
 import { addVideosData, videosRequest } from 'src/app/store/videos.actions';
 import { getTableData } from 'src/app/store/videos.selectors';
+import { tableHeader } from 'src/app/constants/tableHeader.const';
 
 @Component({
   selector: 'app-table',
@@ -22,34 +23,7 @@ export class TableComponent implements OnInit {
   public rowData: ITableData[];
   public videos$: Observable<any> = this.store.select(getTableData);
   private dataFromStorage: IResponseVideoData | null | undefined;
-
-  columnDefs: ColDef[] = [
-    { 
-      headerName: '', 
-      field: 'preview', 
-      sortable: true, 
-      filter: true, 
-      checkboxSelection: true 
-    },
-    { 
-      headerName: 'Published on', 
-      field: 'publishedOn', 
-      sortable: true, 
-      filter: true 
-    },
-    { 
-      headerName: 'Video Title', 
-      field: 'videoTitle', 
-      sortable: true, 
-      filter: true 
-    },
-    { 
-      headerName: 'Description', 
-      field: 'description', 
-      sortable: true, 
-      filter: true 
-    }
-  ];
+  public columnDefs: ColDef[] = tableHeader;
 
   constructor(
     private localStorage: LocalStorageService,
