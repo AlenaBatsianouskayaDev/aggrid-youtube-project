@@ -1,13 +1,10 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { Observable, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ApiService } from 'src/services/api.service';
 import { ITableData } from 'src/app/interfaces/interfaces';
-
-import { MenuModule } from '@ag-grid-enterprise/menu';
 
 @Component({
   selector: 'app-table',
@@ -18,35 +15,60 @@ export class TableComponent implements OnInit {
 
   @ViewChild('agGrid') agGrid!: AgGridAngular;
   public rowData: ITableData[];
-
+  dataRequest$: Observable<any>
+  dataRequestSubscription: Subscription;
 
   columnDefs: ColDef[] = [
-    { headerName: '', field: 'preview', sortable: true, filter: true, checkboxSelection: true },
-    { headerName: 'Published on', field: 'publishedOn', sortable: true, filter: true },
-    { headerName: 'Video Title', field: 'videoTitle', sortable: true, filter: true },
-    { headerName: 'Description', field: 'description', sortable: true, filter: true }
+    { 
+      headerName: '', 
+      field: 'preview', 
+      sortable: true, 
+      filter: true, 
+      checkboxSelection: true 
+    },
+    { 
+      headerName: 'Published on', 
+      field: 'publishedOn', 
+      sortable: true, 
+      filter: true 
+    },
+    { 
+      headerName: 'Video Title', 
+      field: 'videoTitle', 
+      sortable: true, 
+      filter: true 
+    },
+    { 
+      headerName: 'Description', 
+      field: 'description', 
+      sortable: true, 
+      filter: true 
+    }
   ];
 
   constructor(
-    private _http: HttpClient,
     private _apiService: ApiService,
     ) {}
 
   ngOnInit(): void {
-    // this._apiService.getQuery('cat').subscribe(val => 
-    //   this.rowData = val.items.map ((data:any) => ({
-    //     preview: data.snippet.thumbnails.default, 
-    //     publishedOn: data.snippet.publishedAt , 
-    //     videoTitle: data.snippet.title , 
-    //     description: data.snippet.description})
-    //   )
-    // )
-    this.rowData = [
-      { preview: 'a', publishedOn: 'rfhf', videoTitle: 'dgdfrf', description: 'rfhfh' },
-      { preview: 'rdgdf', publishedOn: 'rfhfd', videoTitle: 'rfgdf', description: 'rfhfhd' },
-      { preview: 'rfh', publishedOn: 'rfhf', videoTitle: 'rfhf', description: 'rfhf'},
-      { preview: 'rfhdf', publishedOn: 'rfhfh', videoTitle: 'rfhfd', description: 'rfh'}
-    ] 
+    this._apiService.getQuery('cat')
+      .pipe(
+        // takeUntil(this.destroy$)) 
+        first())
+      .subscribe(val => 
+        this.rowData = val.items.map ((data: any) => ({
+          preview: data.snippet.thumbnails.default.url, 
+          publishedOn: data.snippet.publishedAt , 
+          videoTitle: data.snippet.title , 
+          description: data.snippet.description})
+        )
+      )
+    // this.rowData = [
+    //   { preview: 'a', publishedOn: 'rfhf', videoTitle: 'dgdfrf', description: 'rfhfh' },
+    //   { preview: 'rdgdf', publishedOn: 'rfhfd', videoTitle: 'rfgdf', description: 'rfhfhd' },
+    //   { preview: 'rfh', publishedOn: 'rfhf', videoTitle: 'rfhf', description: 'rfhf'},
+    //   { preview: 'rfhdf', publishedOn: 'rfhfh', videoTitle: 'rfhfd', description: 'rfh'}
+    // ] 
   }
 
   // getSelectedRows(): void {
