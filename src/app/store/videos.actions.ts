@@ -1,17 +1,18 @@
 import { createAction, props } from '@ngrx/store';
-import { IVideosData } from './store.interfaces';
 
+import { IResponseVideoData } from './../interfaces/interfaces';
+import { ActionsEnum } from '../enums/actions.enum';
 
 export const videosRequest = createAction(
-  '[VIDEOS] videosRequest'
+  ActionsEnum.videosRequest
 );
 
 export const addVideosData = createAction(
-  '[VIDEOS] addVideosData',
-  props< IVideosData >()
+  ActionsEnum.videosRequestSuccess,
+  props< IResponseVideoData >()
 );
 
 export const videosRequestError = createAction(
-  '[VIDEOS] videosRequestError',
+  ActionsEnum.videosRequestError,
   props< any >()
 );

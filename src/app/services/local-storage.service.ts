@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { IVideosData } from '../store/store.interfaces';
+import { IResponseVideoData } from './../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
 
-  public saveToLocalStorage(dataName: string, data: IVideosData): void {
+  public saveToLocalStorage(dataName: string, data: IResponseVideoData): void {
     const serializedData = JSON.stringify(data);
     localStorage.setItem(dataName, serializedData);
   }
 
-  public loadFromLocalStorage(dataName:string): IVideosData | undefined{
+  public loadFromLocalStorage(dataName:string): IResponseVideoData | undefined{
     const data = localStorage.getItem(dataName);
     return data === null ? undefined : JSON.parse(data); 
   }

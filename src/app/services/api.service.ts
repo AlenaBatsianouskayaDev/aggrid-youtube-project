@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from "src/environments/environment";
-import { IVideosData } from "../store/store.interfaces";
+import { IResponseVideoData, ITableData } from "./../interfaces/interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,6 @@ export class ApiService {
     ) { }
 
   public getPopularVideos(query: string): Observable<any> {
-    return this._http.get<any>(`${this.API_URL}?key=${this.API_KEY}&maxResults=1&type=video&part=snippet&q=${query}`)
+    return this._http.get<any>(`${this.API_URL}?key=${this.API_KEY}&maxResults=&type=video&part=snippet&q=${query}`)
   }
 }
