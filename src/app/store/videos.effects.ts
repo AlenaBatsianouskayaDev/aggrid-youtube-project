@@ -31,7 +31,7 @@ export class VideosEffects {
         this.apiService.getPopularVideos('cat')
         .pipe(
           map(videos => {
-            this.commonService.makeTableData(videos)
+            console.log(this.commonService.makeTableData(videos))
             videosActions.addVideosData(videos);
             this.localStorageService.saveToLocalStorage(LocalStorageEnum.videoData, videos);
           }),

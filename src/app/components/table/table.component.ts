@@ -36,7 +36,6 @@ export class TableComponent implements OnInit {
     this.dataFromStorage = this.localStorage.loadFromLocalStorage('videosData');
     if(this.dataFromStorage) {
       const a = this.commonService.makeTableData(this.dataFromStorage)
-      console.log(a)
       this.store.dispatch(addVideosData(this.dataFromStorage))
     } else {
       this.store.dispatch(videosRequest());
