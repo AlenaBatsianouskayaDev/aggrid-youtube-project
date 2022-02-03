@@ -12,6 +12,7 @@ import { ITableData } from 'src/app/interfaces/interfaces';
 import { getTableData } from 'src/app/store/videos.selectors';
 import { tableHeader } from 'src/app/constants/tableHeader.const';
 
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -23,11 +24,11 @@ export class TableComponent implements OnInit {
   public gridApi: any;
   public gridColumnApi: any;
   public defaultColDef: any;
-
   public rowData$: Observable <ITableData[]>;
   public videos$: Observable<any> = this.store.select(getTableData);
   public columnDefs: ColDef[];
- 
+  public SEARCH_URL: string = 'https://www.youtube.com/watch?';
+
   constructor(
     private store: Store
     ) {}
@@ -49,8 +50,9 @@ export class TableComponent implements OnInit {
         headerName: 'Video Title', 
         field: 'videoTitle', 
         cellRenderer(params) {
-          return '<a href="https://www.youtube.com/watch?" target="_blank">'+ params.value +'</a>'
-        }
+          return `<a href= https://www.youtube.com/watch?v=${params.data.id}&list=LL target="_blank">`+ params.value +`</a>`
+        },
+      
       },
       { 
         headerName: 'Description', 
@@ -72,10 +74,20 @@ export class TableComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
   }
 
-  getContextMenuItems(params: GetContextMenuItemsParams): (string | MenuItemDef)[] {
+  getContextMenuItems(params: any): (string | MenuItemDef)[] {
+    
+    if (params.column.colId !== 'videoTitle') {
+      return [];
+    }
 
-        let contextMenu = [
+    let contextMenu = [
       'copy',
+      {
+        name: 'Open in new tab',
+        action: function () {
+          window.open(`https://www.youtube.com/watch?v=${params.node.data.id}&list=LL`, "_blank")
+        },
+      },
       'paste'
     ];
     return contextMenu;

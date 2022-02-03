@@ -22,6 +22,6 @@ export class ApiService {
   }  
   
   public getSearchVideos(query: IRequestVideo): Observable<any> {
-    return this._http.get<any>(`${this.API_URL}?key=${this.API_KEY}&maxResults=2&type=video&part=snippet&q=${query.searchValue}`)
+    return this._http.get<any>(`${this.API_URL}?key=${this.API_KEY}&maxResults=3&type=video&part=snippet&q=${query.searchValue}`)
   }
 }
