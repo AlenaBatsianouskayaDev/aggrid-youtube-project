@@ -1,8 +1,12 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { ColDef } from 'ag-grid-community';
+import { ColDef, Column, MenuItemDef, GetContextMenuItemsParams } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
 import { Store } from '@ngrx/store';
+
+import 'ag-grid-enterprise';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 import { ITableData } from 'src/app/interfaces/interfaces';
 import { getTableData } from 'src/app/store/videos.selectors';
@@ -16,27 +20,65 @@ import { tableHeader } from 'src/app/constants/tableHeader.const';
 export class TableComponent implements OnInit {
 
   @ViewChild('agGrid') agGrid!: AgGridAngular;
+  public gridApi: any;
+  public gridColumnApi: any;
+  public defaultColDef: any;
 
   public rowData$: Observable <ITableData[]>;
   public videos$: Observable<any> = this.store.select(getTableData);
-  public columnDefs: ColDef[] = tableHeader;
-
+  public columnDefs: ColDef[];
+ 
   constructor(
     private store: Store
     ) {}
 
   ngOnInit(): void {
     this.rowData$ = this.store.select(getTableData);
+
+    this.columnDefs = [
+      { 
+        headerName: '', 
+        field: 'preview', 
+        checkboxSelection: true,
+      },
+      { 
+        headerName: 'Published on', 
+        field: 'publishedOn', 
+      },
+      { 
+        headerName: 'Video Title', 
+        field: 'videoTitle', 
+        cellRenderer(params) {
+          return '<a href="https://www.youtube.com/watch?" target="_blank">'+ params.value +'</a>'
+        }
+      },
+      { 
+        headerName: 'Description', 
+        field: 'description', 
+      }
+    ];
+    
+    this.defaultColDef = {
+      flex: 1,
+      minWidth: 100,
+      resizable: true,
+      filter: true,
+      sortable: true,
+    };
   } 
 
-  getContextMenuItems(params: any) {
-    let result = [
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+  }
+
+  getContextMenuItems(params: GetContextMenuItemsParams): (string | MenuItemDef)[] {
+
+        let contextMenu = [
       'copy',
-      'separator',
-      'chartRange',
       'paste'
     ];
-    return result;
+    return contextMenu;
   }
 }
  
