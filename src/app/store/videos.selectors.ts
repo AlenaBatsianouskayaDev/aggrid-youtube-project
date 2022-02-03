@@ -5,5 +5,4 @@ const getFeature = createFeatureSelector<IVideosState>('videos');
 
 export const getTableData = createSelector(
   getFeature, (state: IVideosState) => state.videosData
-
 )

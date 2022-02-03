@@ -1,7 +1,7 @@
 import { Action, createReducer, on } from "@ngrx/store";
 
 import * as videosActions from './videos.actions';
-import { IResponseVideoData, ITableData } from "./../interfaces/interfaces";
+import { ITableData } from "./../interfaces/interfaces";
 
 
 export interface IVideosState {

@@ -17,9 +17,8 @@ export class TableComponent implements OnInit {
 
   @ViewChild('agGrid') agGrid!: AgGridAngular;
 
-  public rowData: ITableData[];
+  public rowData$: Observable <ITableData[]>;
   public videos$: Observable<any> = this.store.select(getTableData);
-  
   public columnDefs: ColDef[] = tableHeader;
 
   constructor(
@@ -27,7 +26,7 @@ export class TableComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    
+    this.rowData$ = this.store.select(getTableData);
   } 
 
   getContextMenuItems(params: any) {

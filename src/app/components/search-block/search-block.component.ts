@@ -29,8 +29,7 @@ export class SearchBlockComponent implements OnInit {
       .subscribe((searchValue: string) => {
         this.searchVideo = { searchValue }
         this.store.dispatch(searchVideoRequest(this.searchVideo))
-      }
-        
+      } 
     )
   }
 
