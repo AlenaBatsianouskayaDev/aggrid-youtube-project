@@ -16,18 +16,22 @@ import { environment } from 'src/environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchBlockComponent } from './components/search-block/search-block.component';
 import { MainComponent } from './components/main.component';
+import { CustomStatsToolPanel } from './components/table/custom-tool-bar/custom-tool-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TableComponent,
+    MainComponent,
     SearchBlockComponent,
-    MainComponent
+    TableComponent,
   ],
   imports: [
     BrowserModule,
+    AgGridModule.withComponents([
+      CustomStatsToolPanel,
+      
+    ]),
     HttpClientModule,
-    AgGridModule.withComponents([]),
     StoreModule.forRoot({
       videos: videosReducer
     }),

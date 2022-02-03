@@ -1,4 +1,3 @@
-
 <ag-grid-angular
   #agGrid
   id="myGrid"
@@ -6,11 +5,14 @@
   class="ag-theme-alpine"
   [rowData]="rowData$ | async"
   [columnDefs]="columnDefs"
+  [rowHeight]="rowHeight"
   [defaultColDef]="defaultColDef"
   [getContextMenuItems]="getContextMenuItems"
   [enableRangeSelection]="true"
   [allowContextMenuWithControlKey]="true"
+  [icons]="icons"
+  [sideBar]="sideBar"
+  [frameworkComponents]="frameworkComponents"
   (gridReady)="onGridReady($event)"
 >
 </ag-grid-angular>
-

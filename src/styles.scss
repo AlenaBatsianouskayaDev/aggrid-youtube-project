@@ -6,6 +6,34 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 a {
+  text-decoration: none;
   color: black;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+ul,
+ol,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
