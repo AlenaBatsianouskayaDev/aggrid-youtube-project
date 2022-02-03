@@ -23,6 +23,7 @@ export interface IItem {
     title: string
   }
 }
+
 export interface ITableData {
   id: string,
   preview: string, 
@@ -33,4 +34,8 @@ export interface ITableData {
 
 export interface IErrrorData {
   message: string
+}
+
+export interface IRequestVideo {
+  searchValue: string
 }

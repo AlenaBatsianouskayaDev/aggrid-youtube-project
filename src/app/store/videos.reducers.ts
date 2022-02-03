@@ -6,10 +6,12 @@ import { IResponseVideoData, ITableData } from "./../interfaces/interfaces";
 
 export interface IVideosState {
   videosData: ITableData [],
+  error: string | null,
 }
 
 export const initialState: IVideosState = {
-  videosData: []
+  videosData: [],
+  error: null,
 }
 
 export function videosReducer(state: IVideosState | undefined, action: Action): IVideosState {
@@ -19,13 +21,19 @@ export function videosReducer(state: IVideosState | undefined, action: Action): 
 const reducer = createReducer<IVideosState>(
   initialState,
 
-  on(videosActions.addVideosData, (state, payload) => ({
-    ...state,
-    videosData: { ...state.videosData, ...payload}
-    })
-  ),
-  on(videosActions.videosRequestError, (state, payload) => ({
+  on(videosActions.addVideoData, (state, payload) => {
+    const videoData = Object.values(payload);
+    videoData.pop();
+    return ({
       ...state, 
-    }),
+      videosData: [...videoData]
+     })
+    }
+  ),
+
+  on(videosActions.videoRequestError, (state, payload) => {
+    console.log(payload);
+    return ({ ...state, error: payload})
+    }
   )
 )

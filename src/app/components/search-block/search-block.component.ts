@@ -3,7 +3,8 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { videosRequest } from 'src/app/store/videos.actions';
+import { searchVideoRequest } from 'src/app/store/videos.actions';
+import { IRequestVideo } from 'src/app/interfaces/interfaces';
 
 @Component({
   selector: 'app-search-block',
@@ -12,9 +13,10 @@ import { videosRequest } from 'src/app/store/videos.actions';
 })
 export class SearchBlockComponent implements OnInit {
 
-  public search: string = '';
+  public searchValue: string = '';
   public searchChanged: Subject<string> = new Subject<string>();
   private debounceTime: number = 1000;
+  private searchVideo: IRequestVideo;
 
   constructor(
     private store: Store,
@@ -24,11 +26,15 @@ export class SearchBlockComponent implements OnInit {
     this.searchChanged.pipe(
       debounceTime(this.debounceTime),
       distinctUntilChanged())
-      .subscribe(() => this.store.dispatch(videosRequest())
+      .subscribe((searchValue: string) => {
+        this.searchVideo = { searchValue }
+        this.store.dispatch(searchVideoRequest(this.searchVideo))
+      }
+        
     )
   }
 
   public onChanged(): void {
-    this.searchChanged.next(this.search)
+    this.searchChanged.next(this.searchValue)
   }
 }

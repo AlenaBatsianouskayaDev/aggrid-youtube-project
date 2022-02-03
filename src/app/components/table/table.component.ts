@@ -4,10 +4,7 @@ import { Observable } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
 import { Store } from '@ngrx/store';
 
-import { CommonService } from 'src/app/services/common.service';
-import { LocalStorageService } from 'src/app/services/local-storage.service';
-import { ITableData, IResponseVideoData } from 'src/app/interfaces/interfaces';
-import { addVideosData, videosRequest } from 'src/app/store/videos.actions';
+import { ITableData } from 'src/app/interfaces/interfaces';
 import { getTableData } from 'src/app/store/videos.selectors';
 import { tableHeader } from 'src/app/constants/tableHeader.const';
 
@@ -22,24 +19,15 @@ export class TableComponent implements OnInit {
 
   public rowData: ITableData[];
   public videos$: Observable<any> = this.store.select(getTableData);
-  private dataFromStorage: IResponseVideoData | null | undefined;
+  
   public columnDefs: ColDef[] = tableHeader;
 
   constructor(
-    private localStorage: LocalStorageService,
-    private commonService: CommonService,
     private store: Store
     ) {}
 
   ngOnInit(): void {
-
-    this.dataFromStorage = this.localStorage.loadFromLocalStorage('videosData');
-    if(this.dataFromStorage) {
-      const a = this.commonService.makeTableData(this.dataFromStorage)
-      this.store.dispatch(addVideosData(this.dataFromStorage))
-    } else {
-      this.store.dispatch(videosRequest());
-    }
+    
   } 
 
   getContextMenuItems(params: any) {

@@ -8,7 +8,7 @@ import { IVideosState } from "./videos.reducers";
 import { ApiService } from "src/app/services/api.service";
 import { LocalStorageService } from "../services/local-storage.service";
 import { CommonService } from "../services/common.service";
-
+import { IRequestVideo } from "../interfaces/interfaces";
 import * as videosActions from './videos.actions';
 import { LocalStorageEnum } from "../enums/localStorage.enum";
 
@@ -24,21 +24,38 @@ export class VideosEffects {
     private commonService: CommonService,
     ) { }  
 
-  video$ = createEffect(() =>
+  initialVideo$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(videosActions.videosRequest),
+      ofType(videosActions.initialVideoRequest),
       mergeMap(() => 
-        this.apiService.getPopularVideos('cat')
+        this.apiService.getPopularVideos()
         .pipe(
           map(videos => {
-            console.log(this.commonService.makeTableData(videos))
-            videosActions.addVideosData(videos);
+            videos = this.commonService.makeTableData(videos);
             this.localStorageService.saveToLocalStorage(LocalStorageEnum.videoData, videos);
+            return videosActions.addVideoData(videos);
           }),
-          catchError(error => of(videosActions.videosRequestError(error))
+          catchError(error => of(videosActions.videoRequestError(error))
           )
         )
-      )
+      ),
+    )
+  )
+
+  searchVideo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(videosActions.searchVideoRequest),
+      mergeMap((searchValue: IRequestVideo) => 
+        this.apiService.getSearchVideos(searchValue)
+        .pipe(
+          map(videos => {
+            videos = this.commonService.makeTableData(videos);
+            this.localStorageService.saveToLocalStorage(LocalStorageEnum.videoData, videos);
+            return videosActions.addVideoData(videos);
+          }),
+          catchError((error) => of(videosActions.videoRequestError(error)))
+        )
+      ),
     )
   )
 }
