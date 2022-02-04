@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { IResponseVideoData, ITableData, IItem } from './../interfaces/interfaces';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
+
+  public selectedCount$ = new Subject<number>();
 
   public makeTableData (videos: IResponseVideoData): ITableData [] {
     return videos.items.map((item: IItem) => ({
@@ -15,5 +18,9 @@ export class CommonService {
       description: item.snippet.description,
       })
     )
+  }
+
+  public changeCount(count: number) {
+    this.selectedCount$.next(count); 
   }
 }

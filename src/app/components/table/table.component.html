@@ -13,6 +13,11 @@
   [icons]="icons"
   [sideBar]="sideBar"
   [frameworkComponents]="frameworkComponents"
+  
+  [suppressRowClickSelection]="true"
+  [rowSelection]="rowSelection"
+  (rowSelected)="onRowSelected($event)"
+  (selectionChanged)="onSelectionChanged($event)"
   (gridReady)="onGridReady($event)"
 >
 </ag-grid-angular>

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { RowNode, IToolPanelParams } from "ag-grid-community";
+import { typePropertyIsNotAllowedInProps } from '@ngrx/store/src/models';
+import { RowNode, IToolPanelParams, GridOptions } from "ag-grid-community";
+import { CommonService } from './../../../services/common.service';
 
 interface IToolPanelAngularComp {
   agInit(params: IToolPanelParams): void;
@@ -13,20 +15,20 @@ interface IToolPanelAngularComp {
 
 export class CustomStatsToolPanel implements IToolPanelAngularComp  {
   private params: IToolPanelParams;
-
-  public numMedals: number;
-  public numGold: number;
-  public numSilver: number;
-  public numBronze: number;
-
+  
+  public totalCount: number;
+  public selectedCount: number;
+  
+  constructor (
+    private commonService: CommonService,
+  ) {
+    
+  }
   agInit(params: IToolPanelParams): void {
-    this.params = params;
+    this.params = params; 
 
-    this.numMedals = 0;
-    this.numGold = 0;
-    this.numSilver = 0;
-    this.numBronze = 0;
-
+    this.totalCount = 0;
+    this.selectedCount = 0;
     this.params.api.addEventListener(
       'modelUpdated',
       this.updateTotals.bind(this)
@@ -34,20 +36,14 @@ export class CustomStatsToolPanel implements IToolPanelAngularComp  {
   }
 
   updateTotals(): void {
-    let numGold = 0,
-      numSilver = 0,
-      numBronze = 0;
-
+  
+    this.commonService.selectedCount$.subscribe((selectedCount) => this.selectedCount = selectedCount);
+    let totalCount = 0;
+    
     this.params.api.forEachNode((rowNode: RowNode) => {
-      const data = rowNode.data;
-      if (data.gold) numGold += data.gold;
-      if (data.silver) numSilver += data.silver;
-      if (data.bronze) numBronze += data.bronze;
+      totalCount +=1;
     });
 
-    this.numMedals = numGold + numSilver + numBronze;
-    this.numGold = numGold;
-    this.numSilver = numSilver;
-    this.numBronze = numBronze;
+    this.totalCount = totalCount;
   }
 }

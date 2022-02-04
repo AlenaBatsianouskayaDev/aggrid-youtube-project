@@ -12,7 +12,7 @@ import { ITableData } from 'src/app/interfaces/interfaces';
 import { getTableData } from 'src/app/store/videos.selectors';
 import { tableHeader } from 'src/app/constants/tableHeader.const';
 import { CustomStatsToolPanel } from './custom-tool-bar/custom-tool-bar.component';
-
+import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -36,8 +36,12 @@ export class TableComponent implements OnInit {
   public sideBar: any;
   public frameworkComponents: any;
 
+  public selectedRows: any;
+  public rowSelection: any;
+
   constructor(
-    private store: Store
+    private store: Store,
+    private commonService: CommonService,
     ) {}
 
   ngOnInit(): void {
@@ -46,15 +50,31 @@ export class TableComponent implements OnInit {
     this.columnDefs = [
       { 
         headerName: '', 
+        headerCheckboxSelection: true,
+        // headerCheckboxSelectionFilteredOnly: true,
+        checkboxSelection: true,
+        minWidth: 50,
+        maxWidth: 70,
+        flex: 1,
+        
+      },
+      { 
+        headerName: '', 
         field: 'preview',
         cellRenderer(params) {
           return `<img src=${params.value} alt='video preview'>`
         },
-        cellStyle: {'justify-content': 'center'}
+        cellStyle: {'justify-content': 'center'},
+        minWidth: 100,
+        maxWidth: 200,
+        flex: 1,
       },
       { 
         headerName: 'Published on', 
         field: 'publishedOn', 
+        minWidth: 100,
+        maxWidth: 300,
+        flex: 1,
       },
       { 
         headerName: 'Video Title', 
@@ -62,10 +82,16 @@ export class TableComponent implements OnInit {
         cellRenderer(params) {
           return `<a href= https://www.youtube.com/watch?v=${params.data.id}&list=LL target="_blank">`+ params.value +`</a>`
         },
+        minWidth: 200,
+        maxWidth: 400,
+        flex: 2,
       },
       { 
         headerName: 'Description', 
         field: 'description', 
+        minWidth: 200,
+        maxWidth: 1000,
+        flex: 2,
       }
     ];
     
@@ -79,12 +105,14 @@ export class TableComponent implements OnInit {
         'display': 'flex', 
         'align-items': 'center', 
         'justify-content': 'flex-start', 
-        'white-space': 'normal'}
+        'white-space': 'normal'},
+        allowDragFromColumnsToolPanel: true
     };
 
     this.icons = {
       'custom-stats': '<span class="ag-icon ag-icon-custom-stats"></span>',
     };
+
     this.sideBar = {
       toolPanels: [
         {
@@ -112,6 +140,7 @@ export class TableComponent implements OnInit {
       defaultToolPanel: 'customStats',
     };
     this.frameworkComponents = { customStatsToolPanel: CustomStatsToolPanel };
+    this.rowSelection = 'multiple';
   } 
 
   onGridReady(params: any) {
@@ -137,6 +166,16 @@ export class TableComponent implements OnInit {
     ];
     return contextMenu;
   }
+
+  onRowSelected(event: any) {
+    // console.log(this.gridApi)
+  }
+
+  onSelectionChanged(event: any) {
+    var rowCount = event.api.getSelectedNodes().length; //quantity selected rows
+    this.commonService.changeCount(rowCount)
+  }
 }
  
 
+// <button (click)="myGrid.api.deselectAll()">Clear Selection</button>
