@@ -6,6 +6,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 
 import { videosReducer } from './store/videos.reducers';
@@ -43,6 +44,7 @@ import { CustomStatsToolPanel } from './components/table/custom-tool-bar/custom-
     EffectsModule.forRoot([VideosEffects]),
     BrowserAnimationsModule,
     MatInputModule,
+    MatButtonModule,
     FormsModule
   ],
   providers: [],

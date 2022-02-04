@@ -18,7 +18,9 @@ export class CustomStatsToolPanel implements IToolPanelAngularComp  {
   
   public totalCount: number;
   public selectedCount: number;
+  public gridColumnApi: any;
   
+
   constructor (
     private commonService: CommonService,
   ) {
@@ -46,4 +48,6 @@ export class CustomStatsToolPanel implements IToolPanelAngularComp  {
 
     this.totalCount = totalCount;
   }
+
+  
 }

@@ -39,6 +39,8 @@ export class TableComponent implements OnInit {
   public selectedRows: any;
   public rowSelection: any;
 
+  private isCheckboxShown: boolean = true;
+
   constructor(
     private store: Store,
     private commonService: CommonService,
@@ -49,7 +51,8 @@ export class TableComponent implements OnInit {
 
     this.columnDefs = [
       { 
-        headerName: '', 
+        headerName: '',
+        field: 'checkboxes', 
         headerCheckboxSelection: true,
         // headerCheckboxSelectionFilteredOnly: true,
         checkboxSelection: true,
@@ -174,6 +177,25 @@ export class TableComponent implements OnInit {
   onSelectionChanged(event: any) {
     var rowCount = event.api.getSelectedNodes().length; //quantity selected rows
     this.commonService.changeCount(rowCount)
+  }
+
+  checkboxColumnToggle(event: Event) {
+    if (this.isCheckboxShown) {
+      this.gridColumnApi.applyColumnState({ defaultState: { hide: false } });
+      return;
+    }
+    this.gridColumnApi.applyColumnState({
+      state: [
+        {
+          colId: 'checkboxes',
+          hide: true,
+        },
+      ],
+    });
+  }
+
+  onColumnVisible(e: any) {
+    console.log('Event Column Visible', e);
   }
 }
  
