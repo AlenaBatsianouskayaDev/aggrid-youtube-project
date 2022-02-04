@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CustomToolBarComponent } from './custom-tool-bar.component';
+import { CustomStatsToolPanel } from './custom-tool-bar.component';
 
 describe('CustomToolBarComponent', () => {
-  let component: CustomToolBarComponent;
-  let fixture: ComponentFixture<CustomToolBarComponent>;
+  let component: CustomStatsToolPanel;
+  let fixture: ComponentFixture<CustomStatsToolPanel>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CustomToolBarComponent ]
+      declarations: [ CustomStatsToolPanel ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CustomToolBarComponent);
+    fixture = TestBed.createComponent(CustomStatsToolPanel);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

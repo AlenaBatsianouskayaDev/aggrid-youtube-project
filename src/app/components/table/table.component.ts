@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { ColDef, MenuItemDef } from 'ag-grid-community';
-import { Observable } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
+import { ColDef, GridApi, ColumnApi, MenuItemDef } from 'ag-grid-community';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import 'ag-grid-enterprise';
@@ -12,6 +12,8 @@ import { ITableData } from 'src/app/interfaces/interfaces';
 import { getTableData } from 'src/app/store/videos.selectors';
 import { CustomStatsToolPanel } from './custom-tool-bar/custom-tool-bar.component';
 import { CommonService } from 'src/app/services/common.service';
+import { colSettings } from 'src/app/constants/ag-settings.const';
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -20,15 +22,15 @@ import { CommonService } from 'src/app/services/common.service';
 export class TableComponent implements OnInit {
 
   @ViewChild('agGrid') agGrid!: AgGridAngular;
-  public gridApi: any;
-  public gridColumnApi: any;
-  public defaultColDef: any;
+  public gridApi: GridApi;
+  public gridColumnApi: ColumnApi;
+
+
+  public columnDefs: ColDef[];
+  public defaultColDef = colSettings;
   public rowHeight: any = 100;
 
   public rowData$: Observable <ITableData[]>;
-  public videos$: Observable<any> = this.store.select(getTableData);
-  public columnDefs: ColDef[];
-  public SEARCH_URL: string = 'https://www.youtube.com/watch?v=';
 
   public icons: any;
   public sideBar: any;
@@ -92,20 +94,7 @@ export class TableComponent implements OnInit {
         flex: 2,
       }
     ];
-    
-    this.defaultColDef = {
-      flex: 1,
-      minWidth: 100,
-      resizable: true,
-      filter: true,
-      sortable: true,
-      cellStyle: {
-        'display': 'flex', 
-        'align-items': 'center', 
-        'justify-content': 'flex-start', 
-        'white-space': 'normal'},
-        allowDragFromColumnsToolPanel: true
-    };
+
 
     this.icons = {
       'custom-stats': '<span class="ag-icon ag-icon-custom-stats"></span>',
@@ -165,15 +154,8 @@ export class TableComponent implements OnInit {
     return contextMenu;
   }
 
-  onRowSelected(event: any) {
-    // console.log(this.gridApi)
-  }
-
   onSelectionChanged(event: any) {
     var rowCount = event.api.getSelectedNodes().length; //quantity selected rows
     this.commonService.changeCount(rowCount)
   }
 }
- 
-
-// <button (click)="myGrid.api.deselectAll()">Clear Selection</button>
