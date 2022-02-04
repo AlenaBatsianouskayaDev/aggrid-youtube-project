@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { ColDef, Column, MenuItemDef, GetContextMenuItemsParams } from 'ag-grid-community';
+import { ColDef, MenuItemDef } from 'ag-grid-community';
 import { Observable } from 'rxjs';
 import { AgGridAngular } from 'ag-grid-angular';
 import { Store } from '@ngrx/store';
@@ -10,7 +10,6 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 import { ITableData } from 'src/app/interfaces/interfaces';
 import { getTableData } from 'src/app/store/videos.selectors';
-import { tableHeader } from 'src/app/constants/tableHeader.const';
 import { CustomStatsToolPanel } from './custom-tool-bar/custom-tool-bar.component';
 import { CommonService } from 'src/app/services/common.service';
 @Component({
@@ -31,15 +30,12 @@ export class TableComponent implements OnInit {
   public columnDefs: ColDef[];
   public SEARCH_URL: string = 'https://www.youtube.com/watch?v=';
 
-
   public icons: any;
   public sideBar: any;
   public frameworkComponents: any;
 
   public selectedRows: any;
   public rowSelection: any;
-
-  private isCheckboxShown: boolean = true;
 
   constructor(
     private store: Store,
@@ -54,12 +50,11 @@ export class TableComponent implements OnInit {
         headerName: '',
         field: 'checkboxes', 
         headerCheckboxSelection: true,
-        // headerCheckboxSelectionFilteredOnly: true,
         checkboxSelection: true,
         minWidth: 50,
         maxWidth: 70,
         flex: 1,
-        
+        cellStyle: {'justify-content': 'center'},
       },
       { 
         headerName: '', 
@@ -177,25 +172,6 @@ export class TableComponent implements OnInit {
   onSelectionChanged(event: any) {
     var rowCount = event.api.getSelectedNodes().length; //quantity selected rows
     this.commonService.changeCount(rowCount)
-  }
-
-  checkboxColumnToggle(event: Event) {
-    if (this.isCheckboxShown) {
-      this.gridColumnApi.applyColumnState({ defaultState: { hide: false } });
-      return;
-    }
-    this.gridColumnApi.applyColumnState({
-      state: [
-        {
-          colId: 'checkboxes',
-          hide: true,
-        },
-      ],
-    });
-  }
-
-  onColumnVisible(e: any) {
-    console.log('Event Column Visible', e);
   }
 }
  

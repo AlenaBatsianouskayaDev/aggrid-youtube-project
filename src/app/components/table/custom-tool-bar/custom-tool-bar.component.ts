@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { typePropertyIsNotAllowedInProps } from '@ngrx/store/src/models';
 import { RowNode, IToolPanelParams, GridOptions } from "ag-grid-community";
 import { CommonService } from './../../../services/common.service';
 
@@ -18,8 +17,11 @@ export class CustomStatsToolPanel implements IToolPanelAngularComp  {
   
   public totalCount: number;
   public selectedCount: number;
+ 
+  private isCheckboxShown: boolean = true;
+
+  public gridApi: any;
   public gridColumnApi: any;
-  
 
   constructor (
     private commonService: CommonService,
@@ -28,6 +30,9 @@ export class CustomStatsToolPanel implements IToolPanelAngularComp  {
   }
   agInit(params: IToolPanelParams): void {
     this.params = params; 
+
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
 
     this.totalCount = 0;
     this.selectedCount = 0;
@@ -49,5 +54,32 @@ export class CustomStatsToolPanel implements IToolPanelAngularComp  {
     this.totalCount = totalCount;
   }
 
-  
+  checkboxColumnToggle(event: Event) {
+    console.log(this.gridColumnApi.getColumnState())
+    if (this.isCheckboxShown) {
+      this.isCheckboxShown = false;
+      this.gridColumnApi.applyColumnState({
+        state: [
+          {
+            colId: 'checkboxes',
+            hide: true,
+          }
+        ],
+      });
+      return;
+    }
+    this.isCheckboxShown = true;
+    this.gridColumnApi.applyColumnState({
+      state: [
+        {
+          colId: 'checkboxes',
+          hide: false,
+        },
+      ]
+    });
+  }
+
+  onColumnVisible(e: any) {
+    console.log('Event Column Visible', e);
+  }
 }
